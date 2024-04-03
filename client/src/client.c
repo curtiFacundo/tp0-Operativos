@@ -1,4 +1,5 @@
 #include "client.h"
+#include <readline/history.h>
 
 int main(void)
 {
@@ -19,16 +20,28 @@ int main(void)
 	// Usando el logger creado previamente
 	// Escribi: "Hola! Soy un log"
 
+	logger = log_create("logsTP0.log","logsTP0",true,LOG_LEVEL_INFO);
+	log_info(logger,"Hola! Soy un log");
+	//log_destroy(logger);
+
 
 	/* ---------------- ARCHIVOS DE CONFIGURACION ---------------- */
-
+	
 	config = iniciar_config();
+	config = config_create("/home/utnso/Documents/tp0-Operativos/client/cliente.config");
+	
 
 	// Usando el config creado previamente, leemos los valores del config y los 
 	// dejamos en las variables 'ip', 'puerto' y 'valor'
 
 	// Loggeamos el valor de config
 
+	ip = config_get_string_value(config, "IP");
+	puerto = config_get_string_value(config, "PUERTO");
+	valor = config_get_string_value(config, "CLAVE");
+	log_info(logger,ip);
+	log_info(logger,puerto);
+	log_info(logger,valor);
 
 	/* ---------------- LEER DE CONSOLA ---------------- */
 
@@ -49,13 +62,19 @@ int main(void)
 	terminar_programa(conexion, logger, config);
 
 	/*---------------------------------------------------PARTE 5-------------------------------------------------------------*/
+	
 	// Proximamente
+
+	// DESTRUIR TODOS
+
+	config_destroy(config);
+	log_destroy(logger);
 }
 
 t_log* iniciar_logger(void)
 {
 	t_log* nuevo_logger;
-
+	
 	return nuevo_logger;
 }
 
@@ -70,8 +89,18 @@ void leer_consola(t_log* logger)
 {
 	char* leido;
 
-	// La primera te la dejo de yapa
-	leido = readline("> ");
+    while (1) {
+        leido = readline(">");
+        if (leido) {
+            add_history(leido);
+        }
+        if (!strncmp(leido, "", 4)) {
+            free(leido);
+            break;
+        }
+		log_info(logger,leido);
+        free(leido);
+    }
 
 	// El resto, las vamos leyendo y logueando hasta recibir un string vacío
 
