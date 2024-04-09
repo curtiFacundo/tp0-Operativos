@@ -53,8 +53,10 @@ int main(void)
 
 	// Creamos una conexión hacia el servidor
 	conexion = crear_conexion(ip, puerto);
-
 	// Enviamos al servidor el valor de CLAVE como mensaje
+	enviar_mensaje(ip,conexion);
+	enviar_mensaje(puerto,conexion);
+	enviar_mensaje(valor,conexion);
 
 	// Armamos y enviamos el paquete
 	paquete(conexion);
@@ -62,13 +64,9 @@ int main(void)
 	terminar_programa(conexion, logger, config);
 
 	/*---------------------------------------------------PARTE 5-------------------------------------------------------------*/
-	
 	// Proximamente
-
 	// DESTRUIR TODOS
 
-	config_destroy(config);
-	log_destroy(logger);
 }
 
 t_log* iniciar_logger(void)
@@ -126,4 +124,8 @@ void terminar_programa(int conexion, t_log* logger, t_config* config)
 {
 	/* Y por ultimo, hay que liberar lo que utilizamos (conexion, log y config) 
 	  con las funciones de las commons y del TP mencionadas en el enunciado */
+	config_destroy(config);
+	log_destroy(logger);
+	liberar_conexion(conexion);
+	  
 }
