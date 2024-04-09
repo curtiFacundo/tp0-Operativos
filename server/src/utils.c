@@ -7,7 +7,7 @@ int iniciar_servidor(void)
 	// Quitar esta línea cuando hayamos terminado de implementar la funcion
 	// assert(!"no implementado!");
 
-	struct addrinfo hints, *servinfo, *p;
+	struct addrinfo hints, *servinfo;
 
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_INET;
